@@ -81,4 +81,8 @@ export default class FrontendServer {
     public getComponentById(id: string | number, path: string): Component | undefined {
         return this.components.find(component => component.updateId === `${id}` && component.path === path)
     }
+
+    public getComponentsById(id: string | number): Component[] {
+        return this.components.filter(component => component.updateId === `${id}`)
+    }
 }
