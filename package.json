@@ -1,0 +1,32 @@
+{
+  "name": "neuro-react-server",
+  "version": "0.1.0",
+  "description": "React build to send into electron and another application with update semantic",
+  "main": "index.js",
+  "scripts": {
+    "build:publish": "tsc && npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NEsanya/neuro-react-server.git"
+  },
+  "keywords": [
+    "React",
+    "Server",
+    "Update",
+    "Electron",
+    "NeuroCity"
+  ],
+  "author": {
+    "name": "NEsanya",
+    "email": "nesanya1990@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NEsanya/neuro-react-server/issues"
+  },
+  "homepage": "https://github.com/NEsanya/neuro-react-server#readme",
+  "dependencies": {
+    "typescript": "^4.2.3"
+  }
+}
