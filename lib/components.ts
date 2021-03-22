@@ -2,7 +2,7 @@ import { ReactElement } from "react"
 import { Injectable } from "./injectable"
 import reactElelmentToString from "react-element-to-jsx-string"
 
-export namespace NeuroServer {
+export namespace Components {
     export interface INeuroReactComponent {
         App(): ReactElement
     }
@@ -12,19 +12,11 @@ export namespace NeuroServer {
         injectables?: Array<Injectable.IInjectable>
     }
 
-    class EndComponent {
+    export class EndComponent {
         constructor(public app_root: string, public content: ReactElement, public injectable?: Array<Injectable.IInjectable>) {}
 
-        generate(): string {
-            return `
-                <div id="${this.app_root}"></div>
-
-                const ${this.app_root} = () => (
-                    ${reactElelmentToString(this.content)}
-                )
-
-                ReactDOM.render(${this.app_root}(), ${this.app_root})
-            `
+        ContentToString(): string {
+            return reactElelmentToString(this.content)
         }
     }
 

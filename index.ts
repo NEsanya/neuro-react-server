@@ -1,28 +1,24 @@
-import { ReactElement } from "react"
+import { Components } from "./lib/components"
+import { Module } from "./lib/module"
 import { Injectable } from "./lib/injectable"
-import reactElelmentToString from "react-element-to-jsx-string"
+
+import express from "express"
 
 export namespace NeuroServer {
-    export interface INeuroReactComponent {
-        App(): ReactElement
-    }
+    export function createServer(settings: {
+        port: string | number,
+        Modules: Array<Module.Module>
+    }) {
+        const app = express()
 
-    interface IReactComponentSettings {
-        app_root: string,
-        injectables?: Array<Injectable.IInjectable>
-    }
+        settings.Modules.forEach(el => {
+            app.use(el.setRoutes())
+        })
 
-    class EndComponent {
-        constructor(public app_root: string, public content: ReactElement, public injectable?: Array<Injectable.IInjectable>) {}
-
-        generate(): string {
-            return `
-                ${reactElelmentToString(this.content)}
-            `
-        }
-    }
-
-    export function create_component<T extends INeuroReactComponent>(component: T, settings: IReactComponentSettings) {
-        return new EndComponent(settings.app_root, component.App(), settings.injectables)
+        app.listen(settings.port, () => {
+            console.log(`Neuro React server started on port ${settings.port}`)
+        })
     }
 }
+
+export { Components, Module, Injectable }
