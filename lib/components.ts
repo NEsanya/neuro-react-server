@@ -1,5 +1,5 @@
 import { ReactElement } from "react"
-import { Injectable } from "./lib/injectable"
+import { Injectable } from "./injectable"
 import reactElelmentToString from "react-element-to-jsx-string"
 
 export namespace NeuroServer {
@@ -17,7 +17,13 @@ export namespace NeuroServer {
 
         generate(): string {
             return `
-                ${reactElelmentToString(this.content)}
+                <div id="${this.app_root}"></div>
+
+                const ${this.app_root} = () => (
+                    ${reactElelmentToString(this.content)}
+                )
+
+                ReactDOM.render(${this.app_root}(), ${this.app_root})
             `
         }
     }
