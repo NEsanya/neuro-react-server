@@ -3,7 +3,7 @@ React build to send into electron and another application with update semantic
 ---
 Basic project start:
 ```ts
-import { NeuroServer, Components, Module } from "../index"
+import { NeuroServer, Components, Module } from "neuro-react-server"
 import { createElement } from "react"
 
 class Component implements Components.INeuroReactComponent {
