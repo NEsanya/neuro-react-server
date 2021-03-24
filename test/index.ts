@@ -3,7 +3,7 @@ import { NeuroServer, Components, Module } from "../index"
 class Component implements Components.INeuroReactComponent {
     App() {
         return `
-            TEST
+            <h1>Hi!</h1>
         `
     }
 }

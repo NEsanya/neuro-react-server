@@ -6,19 +6,34 @@ export namespace Module {
         constructor(public name: string, public components: Array<Components.EndComponent>, public injects: Array<Injectable.IInjectable>) {}
 
         public setRoutes(): (fastify: any, options: {path: string}) => Promise<void>  {
-            // const router = Router()
-
-            // this.components.forEach(el => {
-            //     router.get(`/${el.app_root}`, (req, res) => res.send(el.content))
-            // })
-
-            // return router
-
             return async (fastify: any, options: {path: string}) => {
-                this.components.forEach(el => {
-                    fastify.get(`/${options.path}/${el.app_root}`, async (_req: any, _res: any) => el.content)
+                this.components.forEach(component => {
+                    fastify.get(
+                        `/${options.path}/${component.app_root}`, 
+                        async (_req: any, _res: any) => this.validateContent(component)
+                    )
                 })
             }
+        }
+
+        private validateContent(component: Components.EndComponent): string {
+            return component.content.substring(0, 3) === 'jsx' ? this.jsxResonse(component) : `
+<div id="${component.app_root}">
+    ${component.content}
+</div>
+            `
+        }
+
+        private jsxResonse(component: Components.EndComponent): string {
+            return `
+<div id="${component.app_root}"></div>
+<script> 
+    const App = () => (
+        ${component.content.slice(4)}
+    )
+    ReactDOM.render(App(), document.getElementById("${component.app_root}"))
+<script>
+            `
         }
     }
 }
