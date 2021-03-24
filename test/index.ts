@@ -1,15 +1,18 @@
-import { NeuroServer, Components } from "../index"
-import { createElement } from "react"
+import { NeuroServer, Components, Module } from "../index"
 
 class Component implements Components.INeuroReactComponent {
     App() {
-        return createElement('div', null, 'Hello World')
+        return `
+        TEST
+        `
     }
 }
 
+const module = new Module.Module("depos", [Components.create_component(new Component(), {
+    app_root: "depo"
+})], [])
+
 NeuroServer.createServer({
-    port: 3001,
-    Modules: [Components.create_component(new Component(), {
-        app_root: "app-name"
-    })]
+    port: 3002,
+    Modules: [module]
 })

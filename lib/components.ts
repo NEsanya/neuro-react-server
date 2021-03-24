@@ -1,10 +1,8 @@
-import { ReactElement } from "react"
 import { Injectable } from "./injectable"
-import reactElelmentToString from "react-element-to-jsx-string"
 
 export namespace Components {
     export interface INeuroReactComponent {
-        App(): ReactElement
+        App(): string
     }
 
     interface IReactComponentSettings {
@@ -13,14 +11,10 @@ export namespace Components {
     }
 
     export class EndComponent {
-        constructor(public app_root: string, public content: ReactElement, public injectable?: Array<Injectable.IInjectable>) {}
-
-        ContentToString(): string {
-            return reactElelmentToString(this.content)
-        }
+        constructor(public app_root: string, public content: string, public injectable?: Array<Injectable.IInjectable>) {}
     }
 
-    export function create_component<T extends INeuroReactComponent>(component: T, settings: IReactComponentSettings) {
+    export function create_component<T extends INeuroReactComponent>(component: T, settings: IReactComponentSettings): EndComponent {
         return new EndComponent(settings.app_root, component.App(), settings.injectables)
     }
 }
