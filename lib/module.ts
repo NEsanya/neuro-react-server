@@ -1,12 +1,11 @@
 import { Components } from "./components"
 import { Injectable } from "./injectable";
-import { Request, Response } from "express"
 
 export namespace Module {
     export class Module {
         constructor(public name: string, public components: Array<Components.EndComponent>, public injects: Array<Injectable.IInjectable>) {}
 
-        public setRoutes(): (req: Request, res: Response) => void {
+        public setRoutes(): (fastify: any, options: {path: string}) => Promise<void>  {
             // const router = Router()
 
             // this.components.forEach(el => {
@@ -15,9 +14,10 @@ export namespace Module {
 
             // return router
 
-            return (req: Request, res: Response): void => {
-                const component = this.components.find(component => component.app_root === req.params.component)
-                component ? res.send(component.content) : res.status(404).send('Component not found')
+            return async (fastify: any, options: {path: string}) => {
+                this.components.forEach(el => {
+                    fastify.get(`/${options.path}/${el.app_root}`, async (_req: any, _res: any) => el.content)
+                })
             }
         }
     }

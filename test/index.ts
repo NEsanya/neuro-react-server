@@ -3,7 +3,7 @@ import { NeuroServer, Components, Module } from "../index"
 class Component implements Components.INeuroReactComponent {
     App() {
         return `
-        TEST
+            TEST
         `
     }
 }
@@ -13,6 +13,6 @@ const module = new Module.Module("depos", [Components.create_component(new Compo
 })], [])
 
 NeuroServer.createServer({
-    port: 3002,
+    port: 3000,
     Modules: [module]
 })
