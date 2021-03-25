@@ -1,5 +1,6 @@
 import { Components } from "./components"
 import { Injectable } from "./injectable";
+import parse from "html-react-parser"
 
 export namespace Module {
     export class Module {
@@ -15,6 +16,34 @@ export namespace Module {
                 })
             }
         }
+
+        public setDependencies(): (fastify: any, options: {path: string}) => Promise<void>  {
+            return async (fastify: any, options: {path: string}) => {
+                fastify.get(
+                    `/${options.path}/neuro-dependencies`,
+                    async (_req: any, _res: any) => this.validateDependences(this.injects)
+                )
+            }
+        }
+
+        // ---------------------------------------------------------------------------------------------------------------
+        // VALIDATE AND SET DEPENDENCIES INJECTIONS FOR PROJECT 
+        // ---------------------------------------------------------------------------------------------------------------
+
+        private validateDependences(services: Array<Injectable.EndInject>): string {
+            let script = services[0] ? services[0].createInlineInjection() : '' 
+            for(let i = 1; i < services.length; i++) script += services[i].createInlineInjection()
+            return `
+<script>
+${script.trim()}
+</script>
+            `
+        }
+
+        // ---------------------------------------------------------------------------------------------------------------
+        // JSX AND HTML VALIDATE COMPONENTS AND GET INJECTIONS
+        // ---------------------------------------------------------------------------------------------------------------
+
 
         private validateContent(component: Components.EndComponent): string {
             return component.content.substring(0, 3) === 'jsx' ? this.jsxResonse(component) : this.htmlResponse(component)
@@ -37,12 +66,12 @@ export namespace Module {
 </div>
 
 <script>
-    ${scriptString}
-    const App = () => (
-        ${jsxString}
-    )
+    {
+        ${scriptString}
+        const App = () => React.createElement(${JSON.stringify(parse(jsxString))})
 
-    ReactDOM.render(App(), document.getElementById('neuro-${component.app_root}'))
+        ReactDOM.render(App(), document.getElementById('neuro-${component.app_root}'))
+    }
 </script>
             `
         }
@@ -55,7 +84,9 @@ export namespace Module {
     ${htmlString}
 </div>
 <script>
-    ${scriptString}
+    {
+        ${scriptString}
+    }
 </script>
             `
         }

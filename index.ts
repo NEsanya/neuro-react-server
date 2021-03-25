@@ -11,9 +11,12 @@ namespace NeuroServer {
     }) {
         const app = fastify()
 
-        settings.Modules.forEach(el => {
-            app.register(el.setRoutes(), {
-                path: el.name
+        settings.Modules.forEach(module => {
+            app.register(module.setRoutes(), {
+                path: module.name
+            })
+            app.register(module.setDependencies(), {
+                path: module.name
             })
         })
 
