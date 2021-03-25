@@ -3,7 +3,7 @@ import { Injectable } from "./injectable";
 
 export namespace Module {
     export class Module {
-        constructor(public name: string, public components: Array<Components.EndComponent>, public injects: Array<Injectable.IInjectable>) {}
+        constructor(public name: string, public components: Array<Components.EndComponent>, public injects: Array<Injectable.EndInject>) {}
 
         public setRoutes(): (fastify: any, options: {path: string}) => Promise<void>  {
             return async (fastify: any, options: {path: string}) => {
