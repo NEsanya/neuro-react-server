@@ -17,22 +17,46 @@ export namespace Module {
         }
 
         private validateContent(component: Components.EndComponent): string {
-            return component.content.substring(0, 3) === 'jsx' ? this.jsxResonse(component) : `
-<div id="${component.app_root}">
-    ${component.content}
-</div>
-            `
+            return component.content.substring(0, 3) === 'jsx' ? this.jsxResonse(component) : this.htmlResponse(component)
+        }
+
+        private findTagBody(content: string, tag: string): string {
+            return content.substring(
+                content.lastIndexOf(`<${tag}>`) + tag.length + 2,
+                content.lastIndexOf(`</${tag}`)
+            ).trim()
         }
 
         private jsxResonse(component: Components.EndComponent): string {
+            const jsxString: string = this.findTagBody(component.content, "App")
+            const scriptString: string = this.findTagBody(component.content, 'script')
+            const htmlString: string = this.findTagBody(component.content.slice(3), 'body')
             return `
-<div id="${component.app_root}"></div>
-<script> 
-    const App = () => (
-        ${component.content.slice(4)}
-    )
-    ReactDOM.render(App(), document.getElementById("${component.app_root}"))
+<div id="neuro-${component.app_root}">
+    ${htmlString}
+</div>
+
 <script>
+    ${scriptString}
+    const App = () => (
+        ${jsxString}
+    )
+
+    ReactDOM.render(App(), document.getElementById('neuro-${component.app_root}'))
+</script>
+            `
+        }
+
+        private htmlResponse(component: Components.EndComponent): string {
+            const htmlString: string = this.findTagBody(component.content, 'body')
+            const scriptString: string = this.findTagBody(component.content, 'script')
+            return `
+<div id="neuro-${component.app_root}">
+    ${htmlString}
+</div>
+<script>
+    ${scriptString}
+</script>
             `
         }
     }

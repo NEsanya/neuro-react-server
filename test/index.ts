@@ -1,14 +1,22 @@
 import { NeuroServer, Components, Module } from "../index"
 
 class Component implements Components.INeuroReactComponent {
+    constructor(private content: string) {}
+
     App() {
-        return `
-            <h1>Hi!</h1>
+        return `jsx
+            <App>
+                <h1>${this.content}</h1>
+            </App>
+
+            <script>
+                console.log("TEST")
+            </script>
         `
     }
 }
 
-const module = new Module.Module("depos", [Components.create_component(new Component(), {
+const module = new Module.Module("depos", [Components.create_component(new Component('Hi!'), {
     app_root: "depo"
 })], [])
 
