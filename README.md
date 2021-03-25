@@ -9,11 +9,18 @@ import { NeuroServer, Components, Module } from "neuro-react-server"
 
 class Component implements Components.INeuroReactComponent {
     App() {
-        return `
-            <h1>Hi!</h1>
+        return `jsx
+            <App>
+                <h1>Hi!</h1>
+            </App>
+
+            <script>
+                console.log("TEST")
+            </script>
         `
     }
 }
+
 
 const module = new Module.Module("depos", [Components.create_component(new Component(), {
     app_root: "depo"
@@ -26,7 +33,18 @@ NeuroServer.createServer({
 ```
 Now, for request `http://localhost:3000/depos/depo` you can receive this:
 ```html
-<h1>Hi!</h1>
+<div id="neuro-depo">
+    
+</div>
+
+<script>
+    console.log("TEST")
+    const App = () => (
+        <h1>Hi!</h1>
+    )
+
+    ReactDOM.render(App(), document.getElementById('neuro-depo'))
+</script>
 ```
 ---
 
@@ -37,11 +55,28 @@ import { Components } from "neuro-react-server"
 class Component implements Components.INeuroReactComponent {
   App() {
     return `
-      <h1>Hi!</hi>
+      <body>
+        <h1>Hi!</hi>
+      </body>
+      <script>
+        console.log("Hi!")
+      </script>
     `
   }
 }
 ```
+This responde this:
+```html
+<div id="neuro-depo">
+    <h1>Hi!</hi>
+</div>
+<script>
+    console.log("Hi!")
+</script>
+```
+
+---
+
 To create Neuro Component you need to use create_component function:
 ```ts
 const component = Components.create_component(new Component(), {
@@ -58,7 +93,9 @@ class Component implements Components.INeuroReactComponent {
   
   App() {
     return `
-      <h1>${this.info}</hi>
+      <body>
+        <h1>${this.info}</hi>
+      </body>
     `
   }
 
