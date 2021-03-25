@@ -68,7 +68,7 @@ ${script.trim()}
 <script>
     {
         ${scriptString}
-        const App = () => React.createElement(${JSON.stringify(parse(jsxString))})
+        const App = () => ${JSON.stringify(parse(jsxString))}
 
         ReactDOM.render(App(), document.getElementById('neuro-${component.app_root}'))
     }
