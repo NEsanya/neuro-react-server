@@ -40,7 +40,7 @@ Now, for request `http://localhost:3000/depos/depo` you can receive this:
 <script>
     {
         console.log("TEST")
-        const App = () => React.createElement({"type":"h1","key":null,"ref":null,"props":{"children":"Hi!"},"_owner":null,"_store":{}})
+        const App = () => {"type":"h1","key":null,"ref":null,"props":{"children":"Hi!"},"_owner":null,"_store":{}}
 
         ReactDOM.render(App(), document.getElementById('neuro-depo'))
     }
