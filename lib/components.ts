@@ -2,7 +2,9 @@ import { Injectable } from "./injectable"
 
 export namespace Components {
     export interface INeuroReactComponent {
-        App(): string
+        template: string,
+        style: string,
+
     }
 
     interface IReactComponentSettings {

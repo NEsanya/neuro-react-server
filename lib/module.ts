@@ -34,6 +34,8 @@ export namespace Module {
             let script = services[0] ? services[0].createInlineInjection() : '' 
             for(let i = 1; i < services.length; i++) script += services[i].createInlineInjection()
             return `
+<script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
 <script>
 ${script.trim()}
 </script>
@@ -59,12 +61,8 @@ ${script.trim()}
         private jsxResonse(component: Components.EndComponent): string {
             const jsxString: string = this.findTagBody(component.content, "App")
             const scriptString: string = this.findTagBody(component.content, 'script')
-            const htmlString: string = this.findTagBody(component.content.slice(3), 'body')
             return `
-<div id="neuro-${component.app_root}">
-    ${htmlString}
-</div>
-
+<div id="neuro-${component.app_root}"></div>
 <script>
     {
         ${scriptString}
@@ -85,6 +83,7 @@ ${script.trim()}
 </div>
 <script>
     {
+        const NEURO_ID = "${component.app_root}"
         ${scriptString}
     }
 </script>
