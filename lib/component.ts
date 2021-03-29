@@ -1,5 +1,6 @@
 import fs from "fs"
 import path from "path"
+import React from "react"
 import parse from "html-react-parser"
 
 export namespace Component {
@@ -9,15 +10,14 @@ export namespace Component {
         style: string
     }
 
-    interface IEndComponent {
+    export interface IEndComponent {
+        app_root: string,
         parsedTemplate: string,
-        pathToComponent: string
     }
 
     export function create_component<T extends new (...args: any[]) => IComponent>(Component: T, args: any[] = []): IEndComponent {
         class EndComponent extends Component implements IEndComponent {
             public parsedTemplate: string
-            public pathToComponent: string = path.resolve(__dirname, __filename)
 
             constructor(...args: any[]) {
                 super(...args)
@@ -29,12 +29,19 @@ export namespace Component {
             // ------------------------------------------------------------------------------
 
             private replaser(match: string, _p1: string, p2: string, p3: string, offset: string, _string: string) {
-                return JSON.stringify(parse(p2.trim()))
+                return `React.createElement('div', null, window.HTMLReactParser(\`${p2
+                    .trim()
+                    .replace(/(\r\n|\n|\r)/gm,'')
+                    .replace(/> *</gm, '><')
+                    .replace(/(<Inject)(.*)(\/>)/gm, (_component: string, begin, tag: string, end): string => {
+                        const params = tag.match(/({)(.*)(})/gm)
+                        return `\${React.createElement(${tag.replace(params ? params[0] : '' , '').trim()}, ${params ? params[0] : null}}`
+                    })}\`))`
             }
 
             private parseTemplate(): string {
-                let template = this.template.substring(0, 4) === 'njsx' ? this.template.substring(4) : fs.readFileSync(path.resolve(__dirname, this.template), 'utf-8')
-                template = template.replace(/(@\()([^\⼄]*)(\)@)/gm, this.replaser)
+                let template = this.template.substring(0, 4) === 'njsx' ? this.template.substring(4) : fs.readFileSync(this.template, 'utf-8')
+                template = template.replace(/(@\()([^\@]*)(@)/gm, this.replaser)
                 const app = template.substring(
                     template.lastIndexOf(`<App>`) + "App".length + 2,
                     template.lastIndexOf(`</App>`)
@@ -55,7 +62,7 @@ const App = () => {
     ${app}
 }
 
-ReactDOM.render(App(), document.getElementById("${this.app_root}"))
+ReactDOM.render(App(), document.getElementById("neuro-${this.app_root}"))
 
 
 }
@@ -68,13 +75,4 @@ ReactDOM.render(App(), document.getElementById("${this.app_root}"))
     }
 }
 
-class BasicComponent implements Component.IComponent {
-    public app_root: string = "basic-app"
-    public template: string = `./basic-component.njsx`
-    public style: string = "./basic-component.css"
-
-    constructor(protected css: string) {}
-}
-
-const x = Component.create_component(BasicComponent, [])
-console.log(x.parsedTemplate)
+console.log(parse(`<button onClick={setState(state + 1)}>Click me!</button></div>`))

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="https://unpkg.com/html-react-parser@latest/dist/html-react-parser.min.js"></script>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <div id="neuro-basic"></div>
+    <script>    
+    const App = () => {
+        const X = () => React.createElement("div", null, window.HTMLReactParser("<h4>TEXT</h4>"))
+    
+        return React.createElement("div", null, window.HTMLReactParser('<div><X param={"hi!"}/><h4>Hi!</h4><h2>Hi! !</h2><h3>Another hi!</h3></div>'))
+    }
+    
+    ReactDOM.render(App(), document.getElementById("neuro-basic"))
+    </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-import { Components } from "./lib/components"
+import { Component } from "./lib/component"
 import { Module } from "./lib/module"
 import { Injectable } from "./lib/injectable"
 
@@ -29,5 +29,5 @@ namespace NeuroServer {
     }
 }
 
-module.exports = { NeuroServer, Components, Module, Injectable }
-export { NeuroServer, Components, Module, Injectable }
+module.exports = { NeuroServer, Component, Module, Injectable }
+export { NeuroServer, Component, Module, Injectable }

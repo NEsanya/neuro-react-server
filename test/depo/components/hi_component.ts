@@ -1,24 +1,12 @@
-import { Components } from "../../../index"
+import { Component } from "../../../index"
+import path from "path"
 
-class Component implements Components.INeuroReactComponent {
-    constructor(private content: string) {}
+class BasicComponent implements Component.IComponent {
+    app_root: string = "basic"
+    template: string = path.resolve(__dirname, "./basic-component.njsx")
+    style: string = ""
 
-    App() {
-        return `jsx
-            <App>
-                <h1>{info}</h1>
-                <h1>${this.content}</h1>
-            </App>
-
-            <script>
-                let info = "Hi!"
-                const x = "i"
-                console.log("TEST")
-            </script>
-        `
-    }
 }
 
-export default Components.create_component(new Component('Hi!'), {
-    app_root: "depo"
-})
+const component = Component.create_component(BasicComponent, [])
+export default component

@@ -1,0 +1,22 @@
+<App>
+    const [state, setState] = React.useState(0)
+
+  return @(
+    <div>
+      <Inject Test {arg: state} />
+      <Inject Another {arg: state}/>
+      <h3>Another hi!</h3>
+      <button onClick=${console.log(state)}>Click me!</button>
+    </div>
+    @
+</App>
+
+import Anoter from "./path"
+
+function Test({arg}) {
+  return @(
+    <div>
+      <h1>{arg}</h1>
+    </div>
+  @
+}
